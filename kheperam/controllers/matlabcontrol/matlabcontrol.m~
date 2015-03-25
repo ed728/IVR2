@@ -16,7 +16,7 @@ N = 8;
 SPEED = 4;
 TURN_THRESH = 15;
 BLOCK_THRESH = 75;
-BASE_SPEED = 15;
+BASE_SPEED = 2;
 last_left = 0;
 % get and enable distance sensors
 for i=1:N
@@ -63,7 +63,7 @@ while wb_robot_step(TIME_STEP) ~= -1
   left = sensor_values(1) + sensor_values(2);
   right = sensor_values(5) + sensor_values(6);
   front = sensor_values(3) + sensor_values(4);
-  [left, right, front]
+  sensor_values
   %Control logic
   LEFT_SPEED = 0;
   RIGHT_SPEED = 0;
@@ -72,10 +72,11 @@ while wb_robot_step(TIME_STEP) ~= -1
       LEFT_SPEED = BASE_SPEED;
       RIGHT_SPEED = BASE_SPEED;
       1
-  %elseif left > BLOCK_THRESH && right > BLOCK_THRESH && front > BLOCK_THRESH
-   %    LEFT_SPEED = -BASE_SPEED;
-    %   RIGHT_SPEED = BASE_SPEED;
-     %  2
+  elseif left > BLOCK_THRESH && right > BLOCK_THRESH && front > BLOCK_THRESH
+       %Turn around (right or if we were going left continue)
+       LEFT_SPEED = -BASE_SPEED;
+       RIGHT_SPEED = BASE_SPEED;
+       2
   elseif right > left && front > BLOCK_THRESH
       %Turn left
       LEFT_SPEED = BASE_SPEED;
